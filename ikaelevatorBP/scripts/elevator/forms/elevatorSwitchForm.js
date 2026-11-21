@@ -2,6 +2,7 @@ import * as server from "@minecraft/server";
 import * as ui from "@minecraft/server-ui";
 import { ElevatorEntityBase } from "../elevatorBase";
 import * as eUtils from "../../elevatorUtils"
+import { moveMenu } from "./elevatorCommonForm";
 
 /**
  * 
@@ -38,6 +39,9 @@ export function showSwitchManageMenu(instance, player) {
     const manageMenu = new ui.ActionFormData();
     manageMenu.title("管理");
     manageMenu.body(`割り当て階層: ${instance.getFloor() === -1 ? "なし" : instance.getFloor()}\nエレベーター割り当て済み: ${instance.getElevator() !== undefined ? "はい" : "いいえ"}`);
+
+    manageMenu.button("90度回転", "textures/icons/icon_rotate");
+    manageMenu.button("移動", "textures/icons/icon_move");
     manageMenu.button("階層割り当て", "textures/icons/icon_add");
     manageMenu.button("エレベーター割り当て", "textures/icons/icon_fix");
     manageMenu.button("削除", "textures/icons/icon_delete");
@@ -46,7 +50,13 @@ export function showSwitchManageMenu(instance, player) {
         manageMenu.show(player).then(res => {
             if (res.canceled) return;
             switch (res.selection) {
-                case 0: {
+                case 0: { //90度回転
+                    instance.entity.setRotation({ x: instance.entity.getRotation().x, y: instance.entity.getRotation().y + 90 });
+                } break;
+                case 1: { //移動
+                    moveMenu(player, instance.entity);
+                } break;
+                case 2: {
                     const form = new ui.ModalFormData();
                     form.title("階層割り当て");
                     form.textField("階層を入力", "数字を入力してください (例: 1");
@@ -55,18 +65,18 @@ export function showSwitchManageMenu(instance, player) {
                         const value = parseInt(res.formValues[0]);
                         if (isNaN(value)) {
                             player.sendMessage("数値を入力してください");
-                            return;                            
+                            return;
                         }
 
                         instance.setFloor(value);
                         showSwitchManageMenu(instance, player);
                     });
                 } break;
-                case 1: {
+                case 3: {
                     player.setDynamicProperty("pending_switch_id", instance.entity.id);
                     player.sendMessage("エレベーターを右クリックして割り当てしてください");
                 } break;
-                case 2: {
+                case 4: {
                     const confirm = new ui.MessageFormData();
                     confirm.title("確認");
                     confirm.body("スイッチを削除しますか？");
@@ -74,7 +84,7 @@ export function showSwitchManageMenu(instance, player) {
                     confirm.button2("いいえ");
                     confirm.show(player).then(res => {
                         if (res.canceled || res.selection !== 0) return;
-                        eUtils.removeElevator(instance.entity);                    
+                        eUtils.removeElevator(instance.entity);
                     });
                 }
                 default: break;

@@ -2,6 +2,7 @@ import * as server from "@minecraft/server";
 import * as ui from "@minecraft/server-ui";
 import * as utils from "../../utils";
 import { ElevatorEntityBase } from "../elevatorBase";
+import { moveMenu } from "./elevatorCommonForm";
 
 /**
  * @param {ElevatorEntityBase} instance 
@@ -55,12 +56,13 @@ export function showManageMenu(instance, player) {
         const menu = new ui.ActionFormData();
         menu.title("エレベーターの管理");
         menu.button("90度回転", "textures/icons/icon_rotate"); // 0
-        menu.button("階層の一覧", "textures/icons/icon_list"); // 1
-        menu.button("階層の追加", "textures/icons/icon_add"); // 2
-        menu.button("階層の削除", "textures/icons/icon_remove"); // 3
-        menu.button("詰まり解消", "textures/icons/icon_fix"); // 4
-        menu.button("ドアの開閉", "textures/buttons/open"); //5
-        menu.button("エレベーター本体を削除", "textures/icons/icon_delete"); // 6
+        menu.button("移動", "textures/icons/icon_move"); // 1
+        menu.button("階層の一覧", "textures/icons/icon_list"); // 2
+        menu.button("階層の追加", "textures/icons/icon_add"); // 3
+        menu.button("階層の削除", "textures/icons/icon_remove"); // 4
+        menu.button("詰まり解消", "textures/icons/icon_fix"); // 5
+        menu.button("ドアの開閉", "textures/buttons/open"); //6
+        menu.button("エレベーター本体を削除", "textures/icons/icon_delete"); // 7
         server.system.run(() => {
             menu.show(player).then(res => {
                 if (res.canceled) return;
@@ -69,7 +71,10 @@ export function showManageMenu(instance, player) {
                     case 0: { //90度回転
                         ent.setRotation({ x: ent.getRotation().x, y: ent.getRotation().y + 90 });
                     } break;
-                    case 1: { //リスト
+                    case 1: { //移動
+                        moveMenu(player, ent);
+                    } break;
+                    case 2: { //リスト
                         const floorMenu = new ui.MessageFormData();
                         floorMenu.title(`階層リスト (${floors.length ?? 0}階層)`);
                         floorMenu.body(`${floors.floors.map((floor, i) => `${i + 1}階: Y${floor} ${ent.location.y === floor ? "<-- 今の階層" : ""}`).join("\n")}`);
@@ -79,7 +84,7 @@ export function showManageMenu(instance, player) {
                             return showMenu();
                         });
                     } break;
-                    case 2: { //追加
+                    case 3: { //追加
                         const addMenu = new ui.ModalFormData();
                         addMenu.title("階層の追加");
                         addMenu.label("エレベーターの土台を基準とした高さにしてください");
@@ -101,7 +106,7 @@ export function showManageMenu(instance, player) {
                             }
                         });
                     } break;
-                    case 3: { //階層を削除
+                    case 4: { //階層を削除
                         const removeMenu = new ui.ModalFormData();
                         removeMenu.title("階層の削除");
                         removeMenu.label("エレベーターの階層を入力してください");
@@ -119,7 +124,7 @@ export function showManageMenu(instance, player) {
                             return showMenu();
                         });
                     } break;
-                    case 4: {
+                    case 5: {
                         instance.setArriveTimer(0);
                         instance.setArriveFloor(false);
                         instance.setCanMove(true);
@@ -127,11 +132,11 @@ export function showManageMenu(instance, player) {
                         instance.callQueue.floors = [];
                         instance.setOpenTimer(0);
                     } break;
-                    case 5: {
+                    case 6: {
                         instance.toggleDoor(player);
                         instance.earlyOpenTimer(3000);
                     } break;
-                    case 6: { //削除
+                    case 7: { //削除
                         const confirm = new ui.MessageFormData();
                         confirm.title("確認");
                         confirm.body("エレベーターを削除しますか？");

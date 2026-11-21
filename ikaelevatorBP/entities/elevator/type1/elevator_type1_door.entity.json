@@ -118,7 +118,6 @@
                 },
                 "queue_command": {
                     "command": [
-                        "tp @s ~0.5 ~ ~0.5",
                         "execute at @s as @s align xz run tp @s ~ ~ ~",
                         "execute at @s if entity @p[r=6,rym=-45,ry=45] run tp @s ~ ~ ~ 180 0",
                         "execute at @s if entity @p[r=6,rym=45,ry=135] run tp @s ~ ~ ~ -90 0",
