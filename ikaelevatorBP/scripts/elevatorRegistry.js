@@ -27,6 +27,7 @@ export class ElevatorRegistry {
             let styles = ["style_0"]; //デフォルトスタイル
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
             switch (entity.typeId) {
+                case ETYPES.ELEVATOR_TYPE2:
                 case ETYPES.ELEVATOR_TYPE1: {
                     styles = [
                         "style0",
@@ -49,11 +50,12 @@ export class ElevatorRegistry {
                 default: break;
             }
             return new ElevatorSwitchEntity(entity, id, styles);
-        } else if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+_door$`).test(entity.typeId)) {
+        } else if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+_door$`).test(entity.typeId)) { //ドア
             let styles = ["style_0"] //デフォルト
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
             switch (entity.typeId) {
-                case ETYPES.ELEVATOR_TYPE1_SWITCH: {
+                case ETYPES.ELEVATOR_TYPE2_DOOR:
+                case ETYPES.ELEVATOR_TYPE1_DOOR: {
                     styles = [
                         "style0",
                         "style1"
@@ -61,7 +63,7 @@ export class ElevatorRegistry {
                 } break;
                 default: break;
             }
-            return new ElevatorDoorEntity(entity, entity.id, styles);
+            return new ElevatorDoorEntity(entity, id, styles);
         }
     }
 

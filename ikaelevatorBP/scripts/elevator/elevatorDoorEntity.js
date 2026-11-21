@@ -3,7 +3,7 @@ import * as eUtils from "../elevatorUtils";
 import { ElevatorEntityBase } from "./elevatorBase";
 import { showSwitchManageMenu, showSwitchPaintMenu } from "./forms/elevatorSwitchForm";
 import { ElevatorEntity } from "./elevatorEntity";
-import { showDeleteConfirm, showManageDoorMenu } from "./forms/elevatorDoorForm";
+import { showDeleteConfirm, showManageDoorMenu, showPaintDoorMenu } from "./forms/elevatorDoorForm";
 import * as utils from "../utils";
 
 export class ElevatorDoorEntity extends ElevatorEntityBase {
@@ -18,7 +18,7 @@ export class ElevatorDoorEntity extends ElevatorEntityBase {
         this.getElevator();
         this.getFloor();
     }
-    
+
     getElevator() {
         this.elevator = utils.getProperty(this.entity, "elevator", undefined);
         return this.elevator;
@@ -54,8 +54,13 @@ export class ElevatorDoorEntity extends ElevatorEntityBase {
      * @returns 
      */
     async interact(player, item) {
+        if (eUtils.isPaintItem(item)) {
+            showPaintDoorMenu(this, player);
+            return;
+        }
         if (eUtils.isManageItem(item)) {
             showManageDoorMenu(this, player);
+            return;
         }
     }
 

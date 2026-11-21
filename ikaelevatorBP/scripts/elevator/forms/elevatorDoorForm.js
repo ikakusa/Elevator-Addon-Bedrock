@@ -3,10 +3,11 @@ import * as ui from "@minecraft/server-ui";
 import { ElevatorEntityBase } from "../elevatorBase";
 import * as eUtils from "../../elevatorUtils";
 import { moveMenu } from "./elevatorCommonForm";
+import { ElevatorDoorEntity } from "../elevatorDoorEntity";
 
 /**
  * 
- * @param {ElevatorEntityBase} instance 
+ * @param {ElevatorDoorEntity} instance 
  * @param {server.Player} player 
  */
 export function showDeleteConfirm(instance, player) {
@@ -25,7 +26,7 @@ export function showDeleteConfirm(instance, player) {
 
 /**
  * 
- * @param {ElevatorEntityBase} instance 
+ * @param {ElevatorDoorEntity} instance 
  * @param {server.Player} player 
  */
 export function showManageDoorMenu(instance, player) {
@@ -56,6 +57,32 @@ export function showManageDoorMenu(instance, player) {
                 } break;
                 default: break;
             }
+        });
+    });
+}
+
+/**
+ * 
+ * @param {ElevatorDoorEntity} instance 
+ * @param {server.Player} player 
+ */
+export function showPaintDoorMenu(instance, player) {
+    const paintMenu = new ui.ActionFormData();
+    paintMenu.title("スタイル");
+    const currentStyle = instance.getCurrentStyleID();
+    for (const style of instance.styles) {
+        const current = style === currentStyle;
+        const texturePath = `textures/preview/${instance.id}/preview_elevator_${instance.id}_door_${style}.png`;
+        const match = style.match(/^([a-zA-Z]+)(\d+)$/);
+        const newText = `${match[1][0].toUpperCase()}${match[1].slice(1)} ${match[2]} ${current ? "(現在のスタイル)" : ""}`;
+        paintMenu.button(newText, texturePath);
+    }
+    server.system.run(() => {
+        paintMenu.show(player).then(res => {
+            if (res.canceled) return;
+            const currentIndex = instance.getCurrentStyle();
+            if (res.selection === currentIndex) return;
+            instance.setCurrentStyle(res.selection);
         });
     });
 }

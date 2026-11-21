@@ -8,9 +8,14 @@ export const PAINT_ITEM_ID = "elevator:brush";
 export const ELEVATOR_BASE_ID = "elevator:elevator_type";
 
 export const ELEVATOR_IDS = [
+    //type1
     ELEVATOR_TYPES.ELEVATOR_TYPE1,
     ELEVATOR_TYPES.ELEVATOR_TYPE1_DOOR,
-    ELEVATOR_TYPES.ELEVATOR_TYPE1_SWITCH
+    ELEVATOR_TYPES.ELEVATOR_TYPE1_SWITCH,
+
+    //type2
+    ELEVATOR_TYPES.ELEVATOR_TYPE2,
+    ELEVATOR_TYPES.ELEVATOR_TYPE2_DOOR
 ];
 
 export const TYPES = Object.freeze({

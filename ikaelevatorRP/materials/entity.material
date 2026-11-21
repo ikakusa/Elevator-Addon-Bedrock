@@ -1,0 +1,16 @@
+{
+  "materials": {
+    "version": "1.0.0",
+    "elevator_nocull:entity_alphablend": {
+      "+states": [
+        "DisableCulling"
+      ]
+    },
+    "elevator_nocull_nodepth:entity_alphablend": {
+      "+states": [
+        "DisableCulling",
+        "DisableDepthWrite"
+      ]
+    }
+  }
+}
