@@ -1,0 +1,19 @@
+{
+	"texture_data": {
+		"brush": {
+			"textures": "textures/items/brush.png"
+		},
+        "spanner": {
+			"textures": "textures/items/spanner.png"
+		},
+        "icon_elevator_type1": {
+            "textures": "textures/icons/icon_elevator_type1.png"
+        },
+        "icon_elevator_type1_switch": {
+            "textures": "textures/icons/icon_elevator_type1_switch.png"
+        },
+        "icon_elevator_type1_door": {
+            "textures": "textures/icons/icon_elevator_type1_door.png"
+        }
+    }
+}

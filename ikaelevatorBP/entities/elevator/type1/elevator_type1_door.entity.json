@@ -1,0 +1,132 @@
+{
+    "format_version": "1.21.130",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "elevator:elevator_type1_door",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false,
+            "properties": {
+                "property:open": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "property:style": {
+                    "type": "int",
+                    "default": 0,
+                    "range": [
+                        0,
+                        20
+                    ],
+                    "client_sync": true
+                }
+            }
+        },
+        "components": {
+            "minecraft:damage_sensor": {
+                "triggers": {
+                    "cause": "all",
+                    "deals_damage": "no"
+                }
+            },
+            "minecraft:movement": {
+                "value": 0.0
+            },
+            "minecraft:knockback_resistance": {
+                "value": 1.0
+            },
+            "minecraft:pushable": {
+                "is_pushable": false
+            },
+            "minecraft:collision_box": {
+                "width": 0.0625,
+                "height": 0.05
+            },
+            "minecraft:type_family": {
+                "family": [
+                    "elevator_door"
+                ]
+            },
+            "minecraft:rideable": {
+                "seat_count": 3,
+                "crouching_skip_interact": false,
+                "family_types": [
+                    "elevator_2x2_collision"
+                ],
+                "seats": [
+                    {
+                        "position": [
+                            -0.65,
+                            0,
+                            0.96875
+                        ],
+                        "lock_rider_rotation": 0
+                    },
+                    {
+                        "position": [
+                            0.00,
+                            0,
+                            0.96875
+                        ],
+                        "lock_rider_rotation": 0
+                    },
+                    {
+                        "position": [
+                            0.65,
+                            0,
+                            0.96875
+                        ],
+                        "lock_rider_rotation": 0
+                    }
+                ]
+            }
+        },
+        "component_groups": {
+            "elevator_type1:despawn": {
+                "minecraft:instant_despawn": {}
+            },
+            "elevator_type1:add_parts": {
+                "minecraft:addrider": {
+                    "riders": [
+                        {
+                            "entity_type": "elevator:2x2_collision"
+                        },
+                        {
+                            "entity_type": "elevator:2x2_collision"
+                        },
+                        {
+                            "entity_type": "elevator:2x2_collision"
+                        }
+                    ]
+                }
+            }
+        },
+        "events": {
+            "elevator_type1:despawn": {
+                "add": {
+                    "component_groups": [
+                        "elevator_type1:despawn"
+                    ]
+                }
+            },
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "elevator_type1:add_parts"
+                    ]
+                },
+                "queue_command": {
+                    "command": [
+                        "tp @s ~0.5 ~ ~0.5",
+                        "execute at @s as @s align xz run tp @s ~ ~ ~",
+                        "execute at @s if entity @p[r=6,rym=-45,ry=45] run tp @s ~ ~ ~ 180 0",
+                        "execute at @s if entity @p[r=6,rym=45,ry=135] run tp @s ~ ~ ~ -90 0",
+                        "execute at @s if entity @p[r=6,rym=135,ry=-135] run tp @s ~ ~ ~ 0 0",
+                        "execute at @s if entity @p[r=6,rym=-135,ry=-45] run tp @s ~ ~ ~ 90 0"
+                    ]
+                }
+            }
+        }
+    }
+}

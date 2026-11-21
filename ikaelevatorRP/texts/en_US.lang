@@ -1,0 +1,6 @@
+item.elevator:brush=Elevator Brush
+item.elevator:spanner=Elevator Spanner
+
+item.spawn_egg.entity.elevator:elevator_type1_switch.name=Elevator Switch Type 1
+item.spawn_egg.entity.elevator:elevator_type1_door.name=Elevator Door Type 1
+item.spawn_egg.entity.elevator:elevator_type1.name=Elevator Type 1

@@ -1,0 +1,28 @@
+{
+	"format_version": "1.8.0",
+	"render_controllers": {
+		"controller.render.elevator_type1_switch": {
+			"arrays": {
+				"textures": {
+					"Array.texs_off": [
+						"texture.style_0",
+						"texture.style_1"
+					],
+					"Array.texs_on": [
+						"texture.style_0_on",
+						"texture.style_1_on"
+					]
+				}
+			},
+			"geometry": "geometry.default",
+			"materials": [
+				{
+					"*": "material.default"
+				}
+			],
+			"textures": [
+				"query.property('property:on') ? Array.texs_on[query.property('property:style')] : Array.texs_off[query.property('property:style')]"
+			]
+		}
+	}
+}

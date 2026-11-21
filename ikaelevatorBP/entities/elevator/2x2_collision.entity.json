@@ -1,0 +1,102 @@
+{
+    "format_version": "1.16.100",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "elevator:2x2_collision",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "properties": {
+                "property:type": {
+                    "type": "int",
+                    "default": 0,
+                    "range": [
+                        0,
+                        1
+                    ],
+                    "client_sync": true
+                }
+            }
+        },
+        "components": {
+            "minecraft:damage_sensor": {
+                "triggers": {
+                    "cause": "all",
+                    "deals_damage": "no"
+                }
+            },
+            "minecraft:type_family": {
+                "family": [
+                    "elevator_2x2_collision",
+                    "elevator_collision"
+                ]
+            },
+            "minecraft:pushable": {
+                "is_pushable": false
+            },
+            "minecraft:collision_box": {
+                "width": 0.0625,
+                "height": 2.942
+            },
+            "minecraft:environment_sensor": {
+                "triggers": [
+                    {
+                        "filters": {
+                            "test": "int_property",
+                            "domain": "property:type",
+                            "operator": "==",
+                            "value": 0
+                        },
+                        "event": "elevator_collision:collidable"
+                    },
+                    {
+                        "filters": {
+                            "test": "int_property",
+                            "domain": "property:type",
+                            "operator": "==",
+                            "value": 1
+                        },
+                        "event": "elevator_collision:no_collidable"
+                    }
+                ]
+            }
+        },
+        "component_groups": {
+            "elevator_collision:despawn": {
+                "minecraft:instant_despawn": {}
+            },
+            "make_collidable": {
+                "minecraft:is_collidable": {}
+            }
+        },
+        "events": {
+            "elevator_collision:despawn": {
+                "add": {
+                    "component_groups": [
+                        "elevator_collision:despawn"
+                    ]
+                }
+            },
+            "elevator_collision:collidable": {
+                "add": {
+                    "component_groups": [
+                        "make_collidable"
+                    ]
+                },
+                "set_property": {
+                    "property:type": 0
+                }
+            },
+            "elevator_collision:no_collidable": {
+                "remove": {
+                    "component_groups": [
+                        "make_collidable"
+                    ]
+                },
+                "set_property": {
+                    "property:type": 1
+                }
+            }
+        }
+    }
+}

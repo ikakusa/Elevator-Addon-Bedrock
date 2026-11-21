@@ -1,0 +1,32 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "elevator:elevator_type1_switch",
+            "materials": {
+                "default": "entity_alphatest"
+            },
+            "textures": {
+                "style_0": "textures/entity/elevator/switch/elevator_type1_switch.png",
+                "style_1": "textures/entity/elevator/switch/elevator_type1_switch_style1.png",
+
+                "style_0_on": "textures/entity/elevator/switch/elevator_type1_switch_on.png",
+                "style_1_on": "textures/entity/elevator/switch/elevator_type1_switch_style1_on.png"
+            },
+            "geometry": {
+                "default": "geometry.elevator_type1_switch"
+            },
+            "render_controllers": [
+                "controller.render.elevator_type1_switch"
+            ],
+            "scripts": {
+                "animate": [
+                    "controller"
+                ]
+            },
+            "spawn_egg": {
+                "texture": "icon_elevator_type1_switch"
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "Elevator BP",
+        "description": "made by ika\nthis addon adds elevators",
+        "min_engine_version": [
+            1,
+            20,
+            30
+        ],
+        "uuid": "1a3b634d-4353-46bc-8937-489857394355",
+        "version": [
+            1,
+            0,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "36f8cba3-d4d6-4ae2-a2df-831602ff4c1b",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "type": "script",
+            "language": "javascript",
+            "uuid": "361bd796-b00f-4444-9f7c-e5ac77996f27",
+            "entry": "scripts/main.js",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "ad599f3a-de8e-4db3-99aa-0421414d3cd1",
+            "version": "1.0.0"
+        },
+        {
+            "module_name": "@minecraft/server",
+            "version": "beta"
+        },
+        {
+            "module_name": "@minecraft/server-ui",
+            "version": "beta"
+        },
+        {
+            "module_name": "@minecraft/server-admin",
+            "version": "beta"
+        }
+    ],
+    "metadata": {}
+}

@@ -1,0 +1,6 @@
+item.elevator:brush=エレベーター用ブラシ
+item.elevator:spanner=エレベーター用スパナ
+
+item.spawn_egg.entity.elevator:elevator_type1_switch.name=エレベータースイッチ 1型
+item.spawn_egg.entity.elevator:elevator_type1_door.name=エレベータードア 1型
+item.spawn_egg.entity.elevator:elevator_type1.name=エレベーター 1型

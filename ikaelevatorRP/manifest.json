@@ -1,0 +1,36 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "Elevator RP",
+        "description": "made by ika\nthis addon adds elevators",
+        "min_engine_version": [
+            1,
+            20,
+            30
+        ],
+        "uuid": "ad599f3a-de8e-4db3-99aa-0421414d3cd1",
+        "version": [
+            1,
+            0,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "uuid": "c385da85-0c93-4125-a29b-64d924a0cd89",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "1a3b634d-4353-46bc-8937-489857394355",
+            "version": "1.0.0"
+        }
+    ],
+    "metadata": {}
+}

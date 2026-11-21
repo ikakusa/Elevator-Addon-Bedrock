@@ -1,0 +1,135 @@
+{
+   "namespace": "server_form",
+   "third_party_server_screen@common.base_screen": {
+      "$screen_content": "server_form.main_screen_content",
+      "button_mappings": [
+         {
+            "from_button_id": "button.menu_cancel",
+            "to_button_id": "button.menu_exit",
+            "mapping_type": "global"
+         }
+      ]
+   },
+   "main_screen_content": {
+      "type": "panel",
+      "size": [
+         0,
+         0
+      ],
+      "controls": [
+         {
+            "server_form_factory": {
+               "type": "factory",
+               "control_ids": {
+                  "long_form": "@server_form.long_form",
+                  "custom_form": "@server_form.custom_form"
+               }
+            }
+         }
+      ]
+   },
+   "long_form": {
+      "controls": [
+         //default ui
+         {
+            "default_long_form@common_dialogs.main_panel_no_buttons": {
+               "$title_panel": "common_dialogs.standard_title_label",
+               "$title_size": [
+                  "100% - 15px",
+                  10
+               ],
+               "$title_max_size": [
+                  "100% - 15px",
+                  10
+               ],
+               "size": [
+                  225,
+                  200
+               ],
+               "$text_name": "#title_text",
+               "$title_text_binding_type": "none",
+               "$child_control": "server_form.long_form_panel",
+               "layer": 2,
+               "bindings": [
+                  {
+                     "binding_type": "view",
+                     "source_property_name": "((#title_text - '§f§l§o§o§r') = #title_text)",
+                     "target_property_name": "#visible"
+                  }
+               ]
+            }
+         },
+         //floor ui
+         {
+            "floor_pc_form": {
+               "type": "panel",
+               "size": [
+                  105,
+                  260
+               ],
+               "bindings": [
+                  {
+                     "binding_type": "view",
+                     "source_property_name": "(not((#title_text - '§f§l§o§o§r') = #title_text))",
+                     "target_property_name": "#visible"
+                  }
+               ],
+               "controls": [
+                  {
+                     "floor_main@floor_form.floor_main": {}
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "dynamic_button/panel_name": {
+      "size": [
+         34,
+         32
+      ],
+      "modifications": [
+         {
+            "array_name": "controls",
+            "operation": "insert_front",
+            "value": {
+               "url_image_renderer": {
+                  "type": "custom",
+                  "renderer": "profile_image_renderer",
+                  "size": [
+                     32,
+                     32
+                  ],
+                  "bindings": [
+                     {
+                        "binding_type": "view",
+                        "source_control_name": "image",
+                        "resolve_sibling_scope": true,
+                        "source_property_name": "('{\"type\":7,\"url\":\"' + #texture + '\"}')",
+                        "target_property_name": "#profile_image_options"
+                     }
+                  ]
+               }
+            }
+         }
+      ]
+   },
+   "dynamic_button/panel_name/image": {
+      "modifications": [
+         {
+            "array_name": "bindings",
+            "operation": "replace",
+            "where": {
+               "binding_type": "view",
+               "source_property_name": "(not ((#texture = '') or (#texture = 'loading')))",
+               "target_property_name": "#visible"
+            },
+            "value": {
+               "binding_type": "view",
+               "source_property_name": "(not ((#texture = '') or (#texture = 'loading') or ('%.4s' * #texture = 'http')))",
+               "target_property_name": "#visible"
+            }
+         }
+      ]
+   }
+}

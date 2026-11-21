@@ -1,0 +1,24 @@
+{
+	"format_version": "1.8.0",
+	"render_controllers": {
+		"controller.render.elevator_type1": {
+			"arrays": {
+				"textures": {
+					"Array.texs": [
+						"texture.style_0",
+						"texture.style_1"
+					]
+				}
+			},
+			"geometry": "geometry.default",
+			"materials": [
+				{
+					"*": "material.default"
+				}
+			],
+			"textures": [
+				"Array.texs[query.property('property:style')]"
+			]
+		}
+	}
+}
