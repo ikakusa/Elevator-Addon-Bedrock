@@ -33,6 +33,10 @@
             }
         },
         "components": {
+            "minecraft:health": {
+                "value": 20,
+                "max": 20
+            },
             "minecraft:damage_sensor": {
                 "triggers": {
                     "cause": "all",
@@ -61,10 +65,11 @@
                 ]
             },
             "minecraft:rideable": {
-                "seat_count": 14,
+                "seat_count": 22, //14: collision 8: player
                 "crouching_skip_interact": false,
                 "family_types": [
-                    "elevator_2x2_collision"
+                    "elevator_2x2_collision",
+                    "player"
                 ],
                 "seats": [
                     {
@@ -73,7 +78,8 @@
                             1,
                             -0.96875
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -81,7 +87,8 @@
                             1,
                             -0.96875
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -89,7 +96,8 @@
                             1,
                             -0.96875
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -97,7 +105,8 @@
                             1,
                             0.96875
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -105,7 +114,8 @@
                             1,
                             0.96875
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -113,7 +123,8 @@
                             1,
                             0.96875
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -121,7 +132,8 @@
                             1,
                             -0.65
                         ],
-                        "lock_rider_rotation": 90
+                        "lock_rider_rotation": 90,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -129,7 +141,8 @@
                             1,
                             0.00
                         ],
-                        "lock_rider_rotation": 90
+                        "lock_rider_rotation": 90,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -137,7 +150,8 @@
                             1,
                             0.65
                         ],
-                        "lock_rider_rotation": 90
+                        "lock_rider_rotation": 90,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -145,7 +159,8 @@
                             1,
                             -0.65
                         ],
-                        "lock_rider_rotation": 90
+                        "lock_rider_rotation": 90,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -153,7 +168,8 @@
                             1,
                             0.00
                         ],
-                        "lock_rider_rotation": 90
+                        "lock_rider_rotation": 90,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -161,7 +177,8 @@
                             1,
                             0.65
                         ],
-                        "lock_rider_rotation": 90
+                        "lock_rider_rotation": 90,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -169,7 +186,8 @@
                             3.9375,
                             0
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
                     },
                     {
                         "position": [
@@ -177,7 +195,65 @@
                             0,
                             0
                         ],
-                        "lock_rider_rotation": 0
+                        "lock_rider_rotation": 0,
+                        "max_rider_count": 14
+                    },
+                    //players
+                    { //1
+                        "position": [
+                            0,
+                            1.4,
+                            0
+                        ]
+                    },
+                    { //2
+                        "position": [
+                            0.5,
+                            1.4,
+                            0
+                        ]
+                    },
+                    { //3
+                        "position": [
+                            -0.5,
+                            1.4,
+                            0
+                        ]
+                    },
+                    { //4
+                        "position": [
+                            0,
+                            1.4,
+                            -0.5
+                        ]
+                    },
+                    { //5
+                        "position": [
+                            0.5,
+                            1.4,
+                            -0.5
+                        ]
+                    },
+                    { //6
+                        "position": [
+                            -0.5,
+                            1.4,
+                            -0.5
+                        ]
+                    },
+                    { //7
+                        "position": [
+                            -0.5,
+                            1.4,
+                            0.5
+                        ]
+                    },
+                    { //8
+                        "position": [
+                            0.5,
+                            1.4,
+                            0.5
+                        ]
                     }
                 ]
             }

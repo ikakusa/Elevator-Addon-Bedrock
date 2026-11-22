@@ -37,7 +37,7 @@
             },
             "minecraft:collision_box": {
                 "width": 2,
-                "height": 2.942
+                "height": 3.942
             }
         },
         "component_groups": {

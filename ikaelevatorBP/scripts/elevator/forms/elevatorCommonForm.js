@@ -11,7 +11,7 @@ export function moveMenu(player, ent) {
     modal.title("移動");
     modal.dropdown("方向", ["右", "左", "前", "後ろ", "上", "下"]);
     modal.show(player).then(res => {
-        if (res.canceled) return showMenu();
+        if (res.canceled) return;
         const dropdown = res.formValues[0];
         switch (dropdown) {
             case 0: {

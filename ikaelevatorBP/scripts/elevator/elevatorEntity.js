@@ -13,9 +13,11 @@ export class ElevatorEntity extends ElevatorEntityBase {
      * @param {server.Entity} entity 
      * @param {string} id
      * @param {string[]} styles  
+     * @param {number} max_players
+     * @param {number} collision_length
      * @param {...number} frontCollisions 
      */
-    constructor(entity, id, styles, ...frontCollisions) {
+    constructor(entity, id, styles, max_players, collision_length, ...frontCollisions) {
         super(entity, eUtils.TYPES.ELEVATOR);
 
         this.getDoors();
@@ -24,8 +26,11 @@ export class ElevatorEntity extends ElevatorEntityBase {
 
         this.collisions = entity.getComponent("rideable")?.getRiders().length;
         this.frontCollisions = frontCollisions;
-        this.speed = 0.115;
+        this.collision_length = collision_length;
+        this.speed = 0.255;
         this.ySize = 3;
+
+        this.capacity = max_players;
 
         this.id = id;
         this.styles = styles;
@@ -51,7 +56,7 @@ export class ElevatorEntity extends ElevatorEntityBase {
         this.setArriveFloor(false);
 
         const q = this.callQueue;
-        if (q.isEmpty() || !available) return true;
+        if (q.isEmpty() || !available || this.isOverWeight()) return true;
         this.setIsMoving(true);
         const currentY = elevator.location.y;
         let currentQ = q.floors[0];
@@ -125,36 +130,35 @@ export class ElevatorEntity extends ElevatorEntityBase {
             this.setArriveFloor(true);
             this.setIsMoving(false);
 
+            for (const player of this.getRidingPlayers()) {
+                const loc = player.location;
+                player.runCommand("ride @s stop_riding");
+                
+                server.system.runTimeout(() => {
+                    player.clearVelocity();
+                    player.teleport({ x: loc.x, y: center.y + 1, z: loc.z });
+                }, 1);
+            }
+
             return true;
         }
 
         if (!this.canMove() || this.arriveFloor() || !this.isMoving()) return true;
 
+        players.forEach(player => {
+            if (!player.getComponent("riding")?.entityRidingOn) {
+                player.runCommand(`ride @s start_riding @e[c=1,type=${this.entity.typeId}]`);
+            }
+        });
+
+        const slowDistance = isUp ? 7 : 5
+        const multiplier = Math.abs(diffY) < slowDistance ? Math.max(0.3, Math.min(1, Math.abs(diffY) / slowDistance)) : 1;
+        const speedWithSlow = this.speed * multiplier;
+
         if (isUp) {
-            players.forEach(player => {
-                player.clearVelocity();
-                player.applyImpulse({ x: 0, y: (loc.y + this.speed) - loc.y, z: 0 });
-                if (player.location.y < center.y) {
-                    player.teleport({
-                        x: player.location.x,
-                        y: loc.y + this.speed + 1,
-                        z: player.location.z
-                    });
-                }
-            });
-            elevator.teleport({ x: loc.x, y: loc.y + this.speed, z: loc.z });
+            elevator.teleport({ x: loc.x, y: loc.y + speedWithSlow, z: loc.z });
         } else {
-            players.forEach(player => {
-                player.clearVelocity();
-                player.applyImpulse({ x: 0, y: (loc.y - this.speed) - loc.y, z: 0 });
-                if (player.location.y > center.y - this.speed + this.ySize || player.location.y < center.y)
-                    player.teleport({
-                        x: player.location.x,
-                        y: loc.y - this.speed + 1,
-                        z: player.location.z
-                    });
-            });
-            elevator.teleport({ x: loc.x, y: loc.y - this.speed, z: loc.z });
+            elevator.teleport({ x: loc.x, y: loc.y - speedWithSlow, z: loc.z });
         }
         return true;
     }
@@ -196,6 +200,18 @@ export class ElevatorEntity extends ElevatorEntityBase {
 
             showFloorButtons(this, player);
         }
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    isOverWeight() {
+        return this.getPlayerInside().length > this.capacity;
+    }
+
+    getRidingPlayers() {
+        const rideable = this.entity.getComponent("rideable");
+        return rideable.getRiders().filter(ent => ent.typeId === "minecraft:player");
     }
 
     /**
@@ -400,6 +416,7 @@ export class ElevatorEntity extends ElevatorEntityBase {
      */
     closeDoor(other = null, otherCollisions = null) {
         server.system.run(() => {
+            if (this.isOverWeight()) return;
             const use = other ? other : this.entity;
             if (!use.isValid) return;
             const collisions = otherCollisions ? otherCollisions : this.getFrontCollisions();

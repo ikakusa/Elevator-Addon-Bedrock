@@ -28,6 +28,7 @@ export class ElevatorSwitchEntity extends ElevatorEntityBase {
             showSwitchPaintMenu(this, player);
         } else {
             const { Elevators } = await import("../elevatorRegistry");
+            if (!this.getElevator()) return;
             /**
              * @type {ElevatorEntity}
              */

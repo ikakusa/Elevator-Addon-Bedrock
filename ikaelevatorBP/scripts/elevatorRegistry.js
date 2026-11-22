@@ -25,6 +25,8 @@ export class ElevatorRegistry {
         if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+$`).test(entity.typeId)) { //elevator
             let frontIndex = [3, 5]; //basically type1 2x2 elevator
             let styles = ["style_0"]; //デフォルトスタイル
+            let capacity = 8;
+            let collisions = 14;
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
             switch (entity.typeId) {
                 case ETYPES.ELEVATOR_TYPE2:
@@ -36,7 +38,7 @@ export class ElevatorRegistry {
                 } break;
                 default: break;
             }
-            return new ElevatorEntity(entity, id, styles, ...frontIndex);
+            return new ElevatorEntity(entity, id, styles, capacity, collisions, ...frontIndex);
         } else if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+_switch$`).test(entity.typeId)) { //switch
             let styles = ["style_0"] //デフォルト
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
