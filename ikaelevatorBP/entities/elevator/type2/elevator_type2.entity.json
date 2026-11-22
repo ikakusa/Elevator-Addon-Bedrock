@@ -205,56 +205,64 @@
                             0,
                             1.4,
                             0
-                        ]
+                        ],
+                        "max_rider_count": 15
                     },
                     { //2
                         "position": [
                             0.5,
                             1.4,
                             0
-                        ]
+                        ],
+                        "max_rider_count": 16
                     },
                     { //3
                         "position": [
                             -0.5,
                             1.4,
                             0
-                        ]
+                        ],
+                        "max_rider_count": 17
                     },
                     { //4
                         "position": [
                             0,
                             1.4,
                             -0.5
-                        ]
+                        ],
+                        "max_rider_count": 18
                     },
                     { //5
                         "position": [
                             0.5,
                             1.4,
                             -0.5
-                        ]
+                        ],
+                        "max_rider_count": 19
                     },
                     { //6
                         "position": [
                             -0.5,
                             1.4,
                             -0.5
-                        ]
+                        ],
+                        "max_rider_count": 20
                     },
                     { //7
                         "position": [
                             -0.5,
                             1.4,
                             0.5
-                        ]
+                        ],
+                        "max_rider_count": 21
                     },
                     { //8
                         "position": [
                             0.5,
                             1.4,
                             0.5
-                        ]
+                        ],
+                        "max_rider_count": 22
                     }
                 ]
             }

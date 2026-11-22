@@ -129,7 +129,7 @@ export class ElevatorEntity extends ElevatorEntityBase {
             this.setCanMove(false);
             this.setArriveFloor(true);
             this.setIsMoving(false);
-
+            
             for (const player of this.getRidingPlayers()) {
                 const loc = player.location;
                 player.runCommand("ride @s stop_riding");
