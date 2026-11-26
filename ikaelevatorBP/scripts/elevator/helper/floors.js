@@ -35,6 +35,7 @@ export class Floors {
         if (isNaN(yLocation) || this.floors.includes(yLocation)) return false;
         if (this.floors.length >= 50) return false;
         this.floors.push(yLocation);
+        this.floors.sort((a, b) => a - b);
         return true;
     }
 

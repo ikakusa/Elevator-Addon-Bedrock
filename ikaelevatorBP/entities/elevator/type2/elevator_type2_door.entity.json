@@ -12,6 +12,15 @@
                     "default": false,
                     "client_sync": true
                 },
+                "property:floor": {
+                    "type": "int",
+                    "default": -1,
+                    "range": [
+                        -1,
+                        1
+                    ],
+                    "client_sync": true
+                },
                 "property:style": {
                     "type": "int",
                     "default": 0,

@@ -289,13 +289,13 @@
                         "move.legs",
                         "cape",
                         {
-                            "riding.root": "query.is_riding && !query.is_riding_any_entity_of_type('elevator:elevator_type1') && !query.is_riding_any_entity_of_type('elevator:elevator_type2')"
+                            "riding.root": "query.is_riding && !query.is_riding_any_entity_of_type('elevator:2x2_box_collision') && !query.is_riding_any_entity_of_type('elevator:3x3_box_collision')"
                         },
                         {
-                            "riding.arms": "query.is_riding && !query.is_riding_any_entity_of_type('elevator:elevator_type1') && !query.is_riding_any_entity_of_type('elevator:elevator_type2')"
+                            "riding.arms": "query.is_riding && !query.is_riding_any_entity_of_type('elevator:2x2_box_collision') && !query.is_riding_any_entity_of_type('elevator:3x3_box_collision')"
                         },
                         {
-                            "riding.legs": "query.is_riding && !query.is_riding_any_entity_of_type('elevator:elevator_type1') && !query.is_riding_any_entity_of_type('elevator:elevator_type2')"
+                            "riding.legs": "query.is_riding && !query.is_riding_any_entity_of_type('elevator:2x2_box_collision') && !query.is_riding_any_entity_of_type('elevator:3x3_box_collision')"
                         },
                         "holding",
                         {

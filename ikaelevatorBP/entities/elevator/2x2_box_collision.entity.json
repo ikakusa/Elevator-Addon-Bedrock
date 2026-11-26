@@ -19,6 +19,10 @@
             }
         },
         "components": {
+            "minecraft:health": {
+                "value": 20,
+                "max": 20
+            },
             "minecraft:damage_sensor": {
                 "triggers": {
                     "cause": "all",
@@ -38,6 +42,89 @@
             "minecraft:collision_box": {
                 "width": 2,
                 "height": 3.942
+            },
+            "minecraft:rideable": {
+                "seat_count": 8, //8: player
+                "crouching_skip_interact": false,
+                "rider_can_interact": true,
+                "family_types": [
+                    "player"
+                ],
+                "seats": [
+                    //players
+                    { //1
+                        "position": [
+                            0,
+                            1.4,
+                            0
+                        ],
+                        "min_rider_count": 0,
+                        "max_rider_count": 8
+                    },
+                    { //2
+                        "position": [
+                            0.65,
+                            1.4,
+                            0
+                        ],
+                        "min_rider_count": 1,
+                        "max_rider_count": 8
+                    },
+                    { //3
+                        "position": [
+                            -0.65,
+                            1.4,
+                            0
+                        ],
+                        "min_rider_count": 2,
+                        "max_rider_count": 8
+                    },
+                    { //4
+                        "position": [
+                            0,
+                            1.4,
+                            -0.65
+                        ],
+                        "min_rider_count": 3,
+                        "max_rider_count": 8
+                    },
+                    { //5
+                        "position": [
+                            0.65,
+                            1.4,
+                            -0.65
+                        ],
+                        "min_rider_count": 4,
+                        "max_rider_count": 8
+                    },
+                    { //6
+                        "position": [
+                            -0.65,
+                            1.4,
+                            -0.65
+                        ],
+                        "min_rider_count": 5,
+                        "max_rider_count": 8
+                    },
+                    { //7
+                        "position": [
+                            -0.65,
+                            1.4,
+                            0.65
+                        ],
+                        "min_rider_count": 6,
+                        "max_rider_count": 8
+                    },
+                    { //8
+                        "position": [
+                            0.65,
+                            1.4,
+                            0.65
+                        ],
+                        "min_rider_count": 7,
+                        "max_rider_count": 8
+                    }
+                ]
             }
         },
         "component_groups": {

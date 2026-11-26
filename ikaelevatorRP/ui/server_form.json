@@ -53,7 +53,7 @@
                "bindings": [
                   {
                      "binding_type": "view",
-                     "source_property_name": "((#title_text - '§f§l§o§o§r') = #title_text)",
+                     "source_property_name": "((#title_text - '§i§k§a§_§e§l§v§_§f§l§o§o§r') = #title_text)",
                      "target_property_name": "#visible"
                   }
                ]
@@ -70,7 +70,7 @@
                "bindings": [
                   {
                      "binding_type": "view",
-                     "source_property_name": "(not((#title_text - '§f§l§o§o§r') = #title_text))",
+                     "source_property_name": "(not((#title_text - '§i§k§a§_§e§l§v§_§f§l§o§o§r') = #title_text))",
                      "target_property_name": "#visible"
                   }
                ],

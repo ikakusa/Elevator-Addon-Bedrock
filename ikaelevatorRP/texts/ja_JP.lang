@@ -2,8 +2,14 @@ item.elevator:brush=エレベーター用ブラシ
 item.elevator:spanner=エレベーター用スパナ
 
 item.spawn_egg.entity.elevator:elevator_type1_switch.name=エレベータースイッチ 1型
-item.spawn_egg.entity.elevator:elevator_type1_door.name=エレベータードア 1型
-item.spawn_egg.entity.elevator:elevator_type1.name=エレベーター 1型
+item.spawn_egg.entity.elevator:elevator_type1_door.name=エレベータードア 1型 (2x2)
+item.spawn_egg.entity.elevator:elevator_type1.name=エレベーター 1型 (2x2)
 
-item.spawn_egg.entity.elevator:elevator_type2_door.name=エレベータードア 2型
-item.spawn_egg.entity.elevator:elevator_type2.name=エレベーター 2型
+item.spawn_egg.entity.elevator:elevator_type2_door.name=エレベータードア 2型 (2x2)
+item.spawn_egg.entity.elevator:elevator_type2.name=エレベーター 2型 (2x2)
+
+item.spawn_egg.entity.elevator:elevator_type3_door.name=エレベータードア 3型 (3x3)
+item.spawn_egg.entity.elevator:elevator_type3.name=エレベーター 3型 (3x3)
+
+item.spawn_egg.entity.elevator:elevator_type4_door.name=エレベータードア 4型 (3x3)
+item.spawn_egg.entity.elevator:elevator_type4.name=エレベーター 4型 (3x3)

@@ -1,0 +1,12 @@
+{
+	"format_version": "1.14.0",
+	"sound_definitions": {
+		"elevator:arrive": {
+			"sounds": [
+				"sounds/elevator_arrive"
+			],
+			"min_distance": 1,
+			"max_distance": 5
+		}
+    }
+}

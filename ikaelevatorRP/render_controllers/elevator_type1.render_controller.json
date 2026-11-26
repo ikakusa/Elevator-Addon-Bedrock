@@ -13,11 +13,41 @@
 			"geometry": "geometry.default",
 			"materials": [
 				{
-					"*": "material.default"
+					"*": "material.default",
+					"floor_panel": "material.nodepth"
 				}
 			],
 			"textures": [
 				"Array.texs[query.property('property:style')]"
+			],
+			"part_visibility": [
+				{
+					"*": true
+				},
+
+				//digits1
+				{ "0_digits1": "math.mod(query.property('property:floor'), 10) == 0" },
+				{ "1_digits1": "math.mod(query.property('property:floor'), 10) == 1" },
+				{ "2_digits1": "math.mod(query.property('property:floor'), 10) == 2" },
+				{ "3_digits1": "math.mod(query.property('property:floor'), 10) == 3" },
+				{ "4_digits1": "math.mod(query.property('property:floor'), 10) == 4" },
+				{ "5_digits1": "math.mod(query.property('property:floor'), 10) == 5" },
+				{ "6_digits1": "math.mod(query.property('property:floor'), 10) == 6" },
+				{ "7_digits1": "math.mod(query.property('property:floor'), 10) == 7" },
+				{ "8_digits1": "math.mod(query.property('property:floor'), 10) == 8" },
+				{ "9_digits1": "math.mod(query.property('property:floor'), 10) == 9" },
+
+				//digits 10
+				{ "0_digits10": false },
+				{ "1_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 1" },
+				{ "2_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 2" },
+				{ "3_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 3" },
+				{ "4_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 4" },
+				{ "5_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 5" },
+				{ "6_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 6" },
+				{ "7_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 7" },
+				{ "8_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 8" },
+				{ "9_digits10": "math.mod(math.floor(query.property('property:floor') / 10), 10) == 9" }
 			]
 		}
 	}

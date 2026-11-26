@@ -31,6 +31,20 @@ server.system.runInterval(() => {
     if (Elevators.initialized) Elevators.removeInvalid();
 });
 
+server.world.beforeEvents.playerBreakBlock.subscribe(ev => {
+    const player = ev.player;
+    if (Elevator.ELEVATOR_IDS.includes(player.getComponent("riding")?.entityRidingOn.typeId)) {
+        ev.cancel = true;
+    }
+});
+
+server.world.beforeEvents.playerPlaceBlock.subscribe(ev => {
+    const player = ev.player;
+    if (Elevator.ELEVATOR_IDS.includes(player.getComponent("riding")?.entityRidingOn.typeId)) {
+        ev.cancel = true;
+    }
+});
+
 server.world.beforeEvents.playerInteractWithEntity.subscribe(ev => {
     const player = ev.player;
     const item = ev.itemStack;
@@ -47,6 +61,7 @@ server.world.beforeEvents.playerInteractWithEntity.subscribe(ev => {
             const instance = Elevators.tryGet(ent);
             if (!instance) return
             instance.interact(player, item);
+            ev.cancel = true;
         } break;
         default: {
         } break;

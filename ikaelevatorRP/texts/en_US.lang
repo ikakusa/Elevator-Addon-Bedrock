@@ -2,8 +2,14 @@ item.elevator:brush=Elevator Brush
 item.elevator:spanner=Elevator Spanner
 
 item.spawn_egg.entity.elevator:elevator_type1_switch.name=Elevator Switch Type 1
-item.spawn_egg.entity.elevator:elevator_type1_door.name=Elevator Door Type 1
-item.spawn_egg.entity.elevator:elevator_type1.name=Elevator Type 1
+item.spawn_egg.entity.elevator:elevator_type1_door.name=Elevator Door Type 1 (2x2)
+item.spawn_egg.entity.elevator:elevator_type1.name=Elevator Type 1 (2x2)
 
-item.spawn_egg.entity.elevator:elevator_type2_door.name=Elevator Door Type 2
-item.spawn_egg.entity.elevator:elevator_type2.name=Elevator Type 2
+item.spawn_egg.entity.elevator:elevator_type2_door.name=Elevator Door Type 2 (2x2)
+item.spawn_egg.entity.elevator:elevator_type2.name=Elevator Type 2 (2x2)
+
+item.spawn_egg.entity.elevator:elevator_type3_door.name=Elevator Door Type 3 (3x3)
+item.spawn_egg.entity.elevator:elevator_type3.name=Elevator Type 3 (3x3)
+
+item.spawn_egg.entity.elevator:elevator_type4_door.name=Elevator Door Type 4 (3x3)
+item.spawn_egg.entity.elevator:elevator_type4.name=Elevator Type 4 (3x3)

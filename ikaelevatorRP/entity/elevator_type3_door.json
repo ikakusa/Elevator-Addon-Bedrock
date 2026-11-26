@@ -1,0 +1,35 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "elevator:elevator_type3_door",
+            "materials": {
+                "default": "elevator_nocull",
+                "nodepth": "elevator_nocull_nodepth"
+            },
+            "textures": {
+                "style_0": "textures/entity/elevator/type2/elevator_type2.texture.png",
+                "style_1": "textures/entity/elevator/type2/elevator_type2_style1.texture.png"
+            },
+            "geometry": {
+                "default": "geometry.elevator_type3_door"
+            },
+            "render_controllers": [
+                "controller.render.elevator_type2"
+            ],
+            "scripts": {
+                "animate": [
+                    "controller"
+                ]
+            },
+            "animations": {
+                "close": "animation.elevator_type3_close",
+                "open": "animation.elevator_type3_open",
+                "controller": "controller.animation.elevator_type2"
+            },
+            "spawn_egg": {
+                "texture": "icon_elevator_type2_door"
+            }
+        }
+    }
+}

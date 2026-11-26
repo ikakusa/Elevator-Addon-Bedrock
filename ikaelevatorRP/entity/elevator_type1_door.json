@@ -4,7 +4,8 @@
         "description": {
             "identifier": "elevator:elevator_type1_door",
             "materials": {
-                "default": "entity_alphatest"
+                "default": "entity_alphatest",
+                "nodepth": "elevator_nocull_nodepth"
             },
             "textures": {
                 "style_0": "textures/entity/elevator/type1/elevator_type1.texture.png",

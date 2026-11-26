@@ -125,12 +125,12 @@ export function showManageMenu(instance, player) {
                         });
                     } break;
                     case 5: {
-                        instance.setArriveTimer(0);
+                        instance.setArriveTime(0);
                         instance.setArriveFloor(false);
                         instance.setCanMove(true);
                         instance.setIsMoving(false);
                         instance.callQueue.floors = [];
-                        instance.setOpenTimer(0);
+                        instance.setOpenTime(0);
                     } break;
                     case 6: {
                         instance.toggleDoor(player);
@@ -190,7 +190,7 @@ export function showPaintMenu(instance, player) {
  */
 export function showFloorButtons(instance, player) {
     const form = new ui.ActionFormData();
-    form.title(`§f§l§o§o§r${instance.findClosestFloor() + 1}`);
+    form.title(`§i§k§a§_§e§l§v§_§f§l§o§o§r${instance.findClosestFloor() + 1}`);
     for (let i = 0; i < instance.floors.floors.length; i++) {
         form.button(`§f§b§t§n §r${i + 1}階`, `textures/buttons/${i + 1}_${instance.callQueue.floors.includes(instance.floors.floors[i]) ? "on" : "off"}`);
     }
@@ -210,7 +210,7 @@ export function showFloorButtons(instance, player) {
                 instance.addQueue(instance.floors.at(selection));
 
             if (selection >= instance.floors.floors.length && !utils.getProperty(instance.entity, "moving", false)) {
-                switch (selection - instance.floors.floors.length) {
+                switch (selection - (instance.floors.floors.length + (instance.floors.floors.length % 2 === 0 ? 0 : 1))) {
                     case 0: {
                         instance.closeDoor();
                     } break;

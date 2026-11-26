@@ -37,76 +37,135 @@ export class ElevatorEntity extends ElevatorEntityBase {
     }
 
     /**
+     * 
+     * @param {number} currentQ 
+     * @param {boolean} arriveNearBy 
+     * @returns {boolean}
+     */
+    handleArrival(currentQ, arriveNearBy) {
+        const arrive = this.arriveFloor();
+
+        if (!arrive) return false;
+        const aabb = this.entity.getAABB();
+        const center = aabb.center;
+        const opened = this.isDoorOpen();
+        if (!opened)
+            this.openDoor();
+
+        /**
+         * @type {number[]}
+         */
+        let floors = this.floors.floors;
+        const currentFloor = floors.indexOf(currentQ);
+
+        this.setLastOpen(currentFloor);
+        for (const player of this.getRidingPlayers()) {
+            const loc = player.location;
+            player.runCommand("ride @s stop_riding");
+
+            server.system.runTimeout(() => {
+                player.clearVelocity();
+                player.teleport({ x: loc.x, y: center.y + aabb.extent.y + 0.01, z: loc.z });
+            }, 1);
+        }
+        this.setArriveFloor(false);
+
+        if (!arriveNearBy)
+            this.popQueue();
+        else {
+            this.callQueue.remove(this.callQueue.floors.indexOf(currentQ));
+            this.saveCallQueue();
+        }
+        return true;
+    }
+
+    /**
+     * 
+     * @returns {server.Entity}
+     */
+    getBoxCollision() {
+        const riders = this.entity.getComponent("rideable").getRiders();
+        const end = riders[riders.length - 1];
+        return end && end.typeId.includes("box_collision") ? end : undefined;
+    }
+
+    MOVE_NEXT_WAIT_TIME = 6500;
+    AUTO_CLOSE_TIME = 5000;
+    ARRIVAL_WAIT_TIME = 1500;
+    ADD_QUEUE_WAIT_TIME = 2500;
+
+    /**
      * @returns {boolean}
      */
     async tick() {
         if (!this.entity.isValid) return false;
+        if (this.entity.getProperty("property:floor") === -1 || this.entity.getProperty("property:floor") !== utils.getProperty(this.entity, "previous_floor", -1)) {
+            this.entity.setProperty("property:floor", this.findClosestFloor() + 1);
+        }
+        this.entity.setDynamicProperty("previous_floor", this.findClosestFloor() + 1);
+
         const elevator = this.entity;
         const available = this.canMove();
         const opened = this.isDoorOpen();
-        const open_timer = this.getOpenTimer();
+        const open_timer = this.getOpenTime();
+        const arriveTimer = this.getArriveTime();
+        const addQueueTime = this.getAddQueueTime();
+        const arrive = this.arriveFloor();
 
-        if (opened && Date.now() - open_timer > 7000) {
+        if (opened && Date.now() - open_timer > this.AUTO_CLOSE_TIME) {
             this.toggleDoor();
         }
 
-        if (Date.now() - open_timer < 9250) return true;
-
-        this.setCanMove(true);
-        this.setArriveFloor(false);
-
-        const q = this.callQueue;
-        if (q.isEmpty() || !available || this.isOverWeight()) return true;
-        this.setIsMoving(true);
-        const currentY = elevator.location.y;
-        let currentQ = q.floors[0];
-        const diffY = currentY - currentQ;
-        const isUp = diffY < 0;
-
-        const aabb = this.entity.getAABB();
-        const center = aabb.center;
-        const loc = this.entity.location;
-
+        if (Date.now() - open_timer < this.MOVE_NEXT_WAIT_TIME) return true; //閉じてから6.5秒より後
+        if (Date.now() - arriveTimer < this.ARRIVAL_WAIT_TIME && arrive) return true; //1.5秒より後+到着してる場合
+        if (Date.now() - addQueueTime < this.ADD_QUEUE_WAIT_TIME) return true;
         const players = this.getPlayerInside();
 
-        const nearBy = q.floors.filter(f => Math.abs(currentY - f) <= this.speed)[0];
+        const q = this.callQueue;
+        if (q.isEmpty()) return true;
+
+        const loc = this.entity.location;
+        const currentY = loc.y;
+        let currentQ = q.floors[0];
+        let diffY = currentY - currentQ;
+        let isUp = diffY < 0;
+
+
+        //キューの中で到着しそうな階がある場合
+        const nearByList = q.floors.filter(f => Math.abs(currentY - f) <= Math.abs(diffY));
+        nearByList.sort((a, b) => isUp ? a - b : b - a);
+        const nearBy = nearByList[0];
         let arriveNearBy = false;
         if (nearBy && nearBy !== currentQ) {
             currentQ = nearBy;
+            diffY = currentY - currentQ;
+            isUp = diffY < 0;
             arriveNearBy = true;
         }
-        if (arriveNearBy || Math.abs(diffY) <= this.speed) { //ついた
+
+        //到着した後の処理
+        //上の行で到着タイマーから1.5秒以内かを判定してる
+        if (this.handleArrival(currentQ, arriveNearBy)) return true;
+        this.setCanMove(true);
+
+        if (!available || this.isOverWeight()) return true;
+        this.setIsMoving(true);
+
+        //もう少しましな実装にしたいですね
+        const slowDistance = isUp ? 7 : 5;
+        const multiplier = Math.abs(diffY) < slowDistance ? Math.max(0.225, Math.min(1, Math.abs(diffY) / slowDistance)) : 1;
+        const speedWithSlow = this.speed * multiplier;
+        //到着処理
+        //階層のY座標とエレベーターのY座標の差がspeedより少ない場合
+
+        if (Math.abs(diffY) <= speedWithSlow) { //ついた
             players.forEach(player => {
                 player.clearVelocity();
                 player.applyImpulse({ x: 0, y: ((loc.y + this.speed) - loc.y) * 2, z: 0 });
             });
             elevator.teleport({ x: loc.x, y: currentQ, z: loc.z });
 
-            this.entity.dimension.playSound("note.bell", this.entity.location);
-            if (!opened)
-                this.openDoor();
-            this.setArriveTimer(Date.now());
-
-            /**
-             * @type {number[]}
-             */
-            let floors = this.floors.floors;
-            const currentFloor = floors.indexOf(currentQ);
-
-            const checkDoor = () => {
-                if (currentFloor !== -1) {
-                    const doors = this.doors.doors;
-                    const door = doors[currentFloor];
-                    if (!door) return;
-                    const doorEnt = server.world.getEntity(door);
-                    if (!doorEnt) return;
-                    const doorOpen = utils.getProperty(doorEnt, "open", false);
-                    if (!doorOpen) this.openDoor(doorEnt, doorEnt.getComponent("rideable")?.getRiders());
-                }
-            };
-            checkDoor();
-
-            this.setLastOpen(currentFloor);
+            this.entity.dimension.playSound("elevator:arrive", this.entity.location);
 
             const { Elevators } = await import("../elevatorRegistry");
             Elevators.maps.forEach((ins, key) => {
@@ -120,46 +179,30 @@ export class ElevatorEntity extends ElevatorEntityBase {
                 }
             });
 
-            if (!arriveNearBy)
-                this.popQueue();
-            else {
-                this.callQueue.remove(this.callQueue.floors.indexOf(currentQ));
-                this.saveCallQueue();
-            }
             this.setCanMove(false);
             this.setArriveFloor(true);
+            this.setArriveTime(Date.now());
             this.setIsMoving(false);
-            
-            for (const player of this.getRidingPlayers()) {
-                const loc = player.location;
-                player.runCommand("ride @s stop_riding");
-                
-                server.system.runTimeout(() => {
-                    player.clearVelocity();
-                    player.teleport({ x: loc.x, y: center.y + 1, z: loc.z });
-                }, 1);
-            }
 
             return true;
         }
 
         if (!this.canMove() || this.arriveFloor() || !this.isMoving()) return true;
 
+        const box = this.getBoxCollision();
+        //移動中はプレイヤーを強制的にライドさせるよ
         players.forEach(player => {
             if (!player.getComponent("riding")?.entityRidingOn) {
-                player.runCommand(`ride @s start_riding @e[c=1,type=${this.entity.typeId}]`);
+                box.getComponent("rideable").addRider(player);
             }
         });
 
-        const slowDistance = isUp ? 7 : 5
-        const multiplier = Math.abs(diffY) < slowDistance ? Math.max(0.3, Math.min(1, Math.abs(diffY) / slowDistance)) : 1;
-        const speedWithSlow = this.speed * multiplier;
+        //移動します
+        let moveVec = speedWithSlow;
+        if (!isUp)
+            moveVec = -speedWithSlow;
 
-        if (isUp) {
-            elevator.teleport({ x: loc.x, y: loc.y + speedWithSlow, z: loc.z });
-        } else {
-            elevator.teleport({ x: loc.x, y: loc.y - speedWithSlow, z: loc.z });
-        }
+        elevator.teleport({ x: loc.x, y: loc.y + moveVec, z: loc.z });
         return true;
     }
 
@@ -210,7 +253,9 @@ export class ElevatorEntity extends ElevatorEntityBase {
     }
 
     getRidingPlayers() {
-        const rideable = this.entity.getComponent("rideable");
+        const box = this.getBoxCollision();
+        if (!box) return;
+        const rideable = box.getComponent("rideable");
         return rideable.getRiders().filter(ent => ent.typeId === "minecraft:player");
     }
 
@@ -218,7 +263,7 @@ export class ElevatorEntity extends ElevatorEntityBase {
      * @returns {number} returns index
      */
     findClosestFloor() {
-        if (this.floors.floors.length === 0) return undefined;
+        if (this.floors.floors.length === 0) return 0;
         const y = this.floors.floors.reduce((closest, current) => Math.abs(current - this.entity.location.y) < Math.abs(closest - this.entity.location.y) ? current : closest);
         return this.floors.floors.indexOf(y);
     }
@@ -243,16 +288,17 @@ export class ElevatorEntity extends ElevatorEntityBase {
     /** @returns {boolean} */     canMove() { return utils.getProperty(this.entity, "can_move", true); }
     /** @returns {boolean} */     arriveFloor() { return utils.getProperty(this.entity, "arrive_floor", false); }
 
-    /** @returns {number} */      getOpenTimer() { return utils.getProperty(this.entity, "open_timer", 0); }
-    /** @returns {number} */      getArriveTimer() { return utils.getProperty(this.entity, "arrive_timer", 0); }
+    /** @returns {number} */      getOpenTime() { return utils.getProperty(this.entity, "open_timer", 0); }
+    /** @returns {number} */      getArriveTime() { return utils.getProperty(this.entity, "arrive_timer", 0); }
+    /** @returns {number} */      getAddQueueTime() { return utils.getProperty(this.entity, "add_queue_time", 0); }
 
     /**@param {boolean} value  */ setCanMove(value) { this.entity.setDynamicProperty("can_move", value) }
     /**@param {boolean} value  */ setIsMoving(value) { this.entity.setDynamicProperty("moving", value) }
     /** @param {boolean} value  */setArriveFloor(value) { this.entity.setDynamicProperty("arrive_floor", value) }
 
-    /** @param {number} value  */ setArriveTimer(value) { this.entity.setDynamicProperty("arrive_timer", value) }
-    /** @param {number} value  */ setOpenTimer(value) { this.entity.setDynamicProperty("open_timer", value) }
-    /** @param {number} value  */ setArriveTimer(value) { this.entity.setDynamicProperty("arrive_timer", value) }
+    /** @param {number} value  */ setAddQueueTime(value) { this.entity.setDynamicProperty("add_queue_time", value) }
+    /** @param {number} value  */ setArriveTime(value) { this.entity.setDynamicProperty("arrive_timer", value) }
+    /** @param {number} value  */ setOpenTime(value) { this.entity.setDynamicProperty("open_timer", value) }
 
     /**
      * for initialize
@@ -274,7 +320,12 @@ export class ElevatorEntity extends ElevatorEntityBase {
      */
     addQueue(floor) {
         const result = this.callQueue.add(floor);
-        if (result) this.saveCallQueue();
+        if (result) {
+            if (this.callQueue.floors.length === 1) {
+                this.setAddQueueTime(Date.now());
+            }
+            this.saveCallQueue();
+        }
         return result;
     }
 

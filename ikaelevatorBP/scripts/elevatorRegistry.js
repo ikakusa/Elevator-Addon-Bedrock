@@ -24,13 +24,23 @@ export class ElevatorRegistry {
 
         if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+$`).test(entity.typeId)) { //elevator
             let frontIndex = [3, 5]; //basically type1 2x2 elevator
-            let styles = ["style_0"]; //デフォルトスタイル
+            let styles = ["style0"]; //デフォルトスタイル
             let capacity = 8;
             let collisions = 14;
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
             switch (entity.typeId) {
-                case ETYPES.ELEVATOR_TYPE2:
-                case ETYPES.ELEVATOR_TYPE1: {
+                case ETYPES.ELEVATOR_TYPE1:
+                case ETYPES.ELEVATOR_TYPE2: {
+                    styles = [
+                        "style0",
+                        "style1"
+                    ];
+                } break;
+                case ETYPES.ELEVATOR_TYPE3:
+                case ETYPES.ELEVATOR_TYPE4: {
+                    capacity = 15;
+                    collisions = 20;
+                    frontIndex = [0, 4];
                     styles = [
                         "style0",
                         "style1"
@@ -40,7 +50,7 @@ export class ElevatorRegistry {
             }
             return new ElevatorEntity(entity, id, styles, capacity, collisions, ...frontIndex);
         } else if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+_switch$`).test(entity.typeId)) { //switch
-            let styles = ["style_0"] //デフォルト
+            let styles = ["style0"] //デフォルト
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
             switch (entity.typeId) {
                 case ETYPES.ELEVATOR_TYPE1_SWITCH: {
@@ -53,11 +63,13 @@ export class ElevatorRegistry {
             }
             return new ElevatorSwitchEntity(entity, id, styles);
         } else if (new RegExp(`${eUtils.ELEVATOR_BASE_ID}\\d+_door$`).test(entity.typeId)) { //ドア
-            let styles = ["style_0"] //デフォルト
+            let styles = ["style0"] //デフォルト
             let id = entity.typeId.match(new RegExp(`(?<=_)type\\d+`))[0];
             switch (entity.typeId) {
+                case ETYPES.ELEVATOR_TYPE1_DOOR:
                 case ETYPES.ELEVATOR_TYPE2_DOOR:
-                case ETYPES.ELEVATOR_TYPE1_DOOR: {
+                case ETYPES.ELEVATOR_TYPE3_DOOR:
+                case ETYPES.ELEVATOR_TYPE4_DOOR: {
                     styles = [
                         "style0",
                         "style1"
